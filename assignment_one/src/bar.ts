@@ -1,64 +1,61 @@
-export let BEER_ONE = "heineken";
-export let BEERTWO = 'corona';
-export let CocktailOne = `mojito`;
-export let cocktail2="margerita"
-export let special_cocktail="special_bacardi";
+export const BEER_ONE = "heineken";
+export const BEER_TWO = "corona";
+export const COCKTAIL_ONE = "mojito";
+export const COCKTAIL_TWO = "margarita";
+export const SPECIAL_COCKTAIL = "special_bacardi";
 
-export function calculateCost(drink, isStudent, amount) {
-    if (amount> 2 && (drink == CocktailOne||drink == cocktail2)) {
-    throw new Error("Not allowed to order more than 2 cocktails");
+export type Drink = typeof BEER_ONE | typeof BEER_TWO | typeof COCKTAIL_ONE | typeof COCKTAIL_TWO | typeof SPECIAL_COCKTAIL;
+
+
+enum INGREDIENTS {
+    RUM = 65,
+    MINT = 10,
+    LIME_JUICE = 10,
+    SUGAR = 10,
+    TONIC_WATER = 20,
+    GIN = 85,
+};
+
+export function calculateCost(drink: Drink, isStudent: boolean, amount: number): number {
+    if (!Number.isInteger(amount) || amount < 1) {
+        throw new Error("Amount must be a positive integer");
+    } 
+    if ((drink === COCKTAIL_ONE || drink === COCKTAIL_TWO || drink === SPECIAL_COCKTAIL) && amount > 2) {
+        throw new Error("Not allowed to order more than 2 cocktails" + drink);
     }
-    var finalPrice;
-        if (drink == BEER_ONE) {
+
+    let finalPrice: number;
+    switch (drink) {
+        case BEER_ONE:
             finalPrice = 74;
-        }
-    else if (drink == CocktailOne) {
-        finalPrice = 103;
+            break;
+        case BEER_TWO:
+            finalPrice = 110;
+            break;
+        case COCKTAIL_ONE:
+            finalPrice = 103;
+            break;
+        case COCKTAIL_TWO:
+            finalPrice = INGREDIENTS.GIN + INGREDIENTS.TONIC_WATER + INGREDIENTS.SUGAR;
+            break;
+        case SPECIAL_COCKTAIL:
+            finalPrice =
+                INGREDIENTS.GIN / 2 +
+                INGREDIENTS.RUM +
+                INGREDIENTS.MINT +
+                INGREDIENTS.SUGAR;
+            break;
+        default:
+            throw new Error("Drink does not exist");
     }
-    else if (drink == BEERTWO) finalPrice = 110;
-    else if (drink == BEERTWO) finalPrice = 110;
-    else if (drink == cocktail2) {
-        finalPrice = ingredient_6() + ingredient_5() + ingredient_4();
+
+    if (isStudent && (drink === BEER_ONE || drink === BEER_TWO)) {
+        finalPrice = finalPrice - finalPrice / 10;
     }
-    else if (drink == special_cocktail) {finalPrice = ingredient_6()/2 
-        + ingredient_1() + ingredient_2() + ingredient_3();
+
+    if (!finalPrice) {
+        return 0;
     }
-    else {
-        throw new Error("Drink does not exist");
-    }
-    if (isStudent && (drink ==BEER_ONE||drink == BEERTWO)) {
-        finalPrice = finalPrice-finalPrice/10;
-    }
-    if (!finalPrice) return;
-    return Math.ceil(finalPrice*amount);
-}
 
-// Rum
-function ingredient_1() {
-    return 65;
-}
-
-// Mint
-function ingredient_2() {
-    return 10;
-}
-
-// Lime Juice
-function ingredient_3() {
-    return 10;
-}
-
-// Sugar
-function ingredient_4() {
-    return 10;
-}
-
-/**
- * Tonic water
- */ 
-const ingredient_5 = () => 20;
-
-// Gin
-function ingredient_6() {
-    return 85;
+    return Math.ceil(finalPrice * amount);
 }
