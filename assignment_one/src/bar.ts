@@ -1,11 +1,10 @@
-export const BEER_ONE = "heineken";
-export const BEER_TWO = "corona";
-export const COCKTAIL_ONE = "mojito";
-export const COCKTAIL_TWO = "margarita";
-export const SPECIAL_COCKTAIL = "special_bacardi";
-
-export type Drink = typeof BEER_ONE | typeof BEER_TWO | typeof COCKTAIL_ONE | typeof COCKTAIL_TWO | typeof SPECIAL_COCKTAIL;
-
+export enum DRINKS {
+    BEER_ONE = "heineken",
+    BEER_TWO = "corona",
+    COCKTAIL_ONE = "mojito",
+    COCKTAIL_TWO = "margarita",
+    SPECIAL_COCKTAIL = "special_bacardi",
+}
 
 enum INGREDIENTS {
     RUM = 65,
@@ -16,29 +15,29 @@ enum INGREDIENTS {
     GIN = 85,
 };
 
-export function calculateCost(drink: Drink, isStudent: boolean, amount: number): number {
+export function calculateCost(drink: DRINKS, isStudent: boolean, amount: number): number {
     if (!Number.isInteger(amount) || amount < 1) {
         throw new Error("Amount must be a positive integer");
     } 
-    if ((drink === COCKTAIL_ONE || drink === COCKTAIL_TWO || drink === SPECIAL_COCKTAIL) && amount > 2) {
+    if ((drink === DRINKS.COCKTAIL_ONE || drink === DRINKS.COCKTAIL_TWO || drink === DRINKS.SPECIAL_COCKTAIL) && amount > 2) {
         throw new Error("Not allowed to order more than 2 cocktails" + drink);
     }
 
     let finalPrice: number;
     switch (drink) {
-        case BEER_ONE:
+        case DRINKS.BEER_ONE:
             finalPrice = 74;
             break;
-        case BEER_TWO:
+        case DRINKS.BEER_TWO:
             finalPrice = 110;
             break;
-        case COCKTAIL_ONE:
+        case DRINKS.COCKTAIL_ONE:
             finalPrice = 103;
             break;
-        case COCKTAIL_TWO:
+        case DRINKS.COCKTAIL_TWO:
             finalPrice = INGREDIENTS.GIN + INGREDIENTS.TONIC_WATER + INGREDIENTS.SUGAR;
             break;
-        case SPECIAL_COCKTAIL:
+        case DRINKS.SPECIAL_COCKTAIL:
             finalPrice =
                 INGREDIENTS.GIN / 2 +
                 INGREDIENTS.RUM +
@@ -49,7 +48,7 @@ export function calculateCost(drink: Drink, isStudent: boolean, amount: number):
             throw new Error("Drink does not exist");
     }
 
-    if (isStudent && (drink === BEER_ONE || drink === BEER_TWO)) {
+    if (isStudent && (drink === DRINKS.BEER_ONE || drink === DRINKS.BEER_TWO)) {
         finalPrice = finalPrice - finalPrice / 10;
     }
 
