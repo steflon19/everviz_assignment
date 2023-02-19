@@ -28,4 +28,5 @@ It is expected to use  ~1 to ~2 hours on this task.
 
 
 
-
+## How to run
+Run the sample implementation by following the [Readme](./design_test/README.md) inside the `design_test` folder
